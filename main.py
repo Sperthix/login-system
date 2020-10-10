@@ -1,3 +1,4 @@
+import sys
 
 
 def prihlasenie():
@@ -53,7 +54,7 @@ def menu():
         elif int(i) == 2:
             registracia()
         elif int(i) == 0:
-            return
+            sys.exit()
         else:
             print("nesprávny vstup")
             menu()
