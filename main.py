@@ -1,12 +1,13 @@
 import sys
+from tkinter import *
 
 
-def prihlasenie():
+def prihlasenie(event):
     uspech = False
     f = open("login.txt", "r")
-    meno = input("Zadajte prihlasovacie meno: ")
+    meno = vstup_meno.tostring()
     meno = meno + "\n"
-    heslo = input("Zadajte heslo: ")
+    heslo = vstup_heslo.tostring()
     heslo = heslo + "\n"
     for x in f:
         # print("Aktualny zaznam je: " + x)
@@ -63,4 +64,24 @@ def menu():
         menu()
 
 
+login = Tk()
+
+label_meno = Label(login, text="Meno: ")
+label_heslo = Label(login, text="Heslo: ")
+
+vstup_meno = Entry(login)
+vstup_heslo = Entry(login)
+
+tlacidlo_login = Button(login, text="Login")
+
+label_meno.grid(row=0, column=0, sticky=E)
+label_heslo.grid(row=1, column=0, sticky=E)
+vstup_meno.grid(row=0, column=1)
+vstup_heslo.grid(row=1, column=1)
+tlacidlo_login.grid(row=2, columnspan=2)
+tlacidlo_login.bind("<Button-1>", prihlasenie)
+
+
+login.mainloop()
 menu()
+
