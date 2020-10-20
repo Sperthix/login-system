@@ -2,13 +2,11 @@ import sys
 from tkinter import *
 
 
-def prihlasenie(event):
+def prihlasenie():
     uspech = False
     f = open("login.txt", "r")
-    meno = vstup_meno.tostring()
-    meno = meno + "\n"
-    heslo = vstup_heslo.tostring()
-    heslo = heslo + "\n"
+    meno = vstup_meno.get() + "\n"
+    heslo = vstup_heslo.get() + "\n"
     for x in f:
         # print("Aktualny zaznam je: " + x)
         # print("Zadane meno je: " + meno)
@@ -16,12 +14,11 @@ def prihlasenie(event):
             # print("rozpoznal som meno")
             y = f.readline()
             if y == heslo:
-                print("Prihlasenie bolo uspesne")
+                label_info.config(text="Prihlásenie bolo úspešné.")
                 uspech = True
                 break
-                return
             else:
-                print("Nespravne heslo")
+                label_info.config(text="Nesprávne heslo, zadajte prosím správne meno a heslo.")
                 prihlasenie()
     if not uspech:
         print("Prihlasenie nebolo uspesne, navrat do hlavneho menu")
@@ -43,10 +40,6 @@ def registracia():
     menu()
 
 
-def vypis_zoznamu():
-    return
-
-
 def menu():
     i = input("Chcete sa prihlasit (1), vytvorit ucet? (2), alebo ukoncit program? (0)")
     if i.isdigit():
@@ -66,20 +59,21 @@ def menu():
 
 login = Tk()
 
+label_info = Label(login, text="Pre prihlásenie prosím zadajte Vaše meno a heslo.")
 label_meno = Label(login, text="Meno: ")
 label_heslo = Label(login, text="Heslo: ")
 
 vstup_meno = Entry(login)
 vstup_heslo = Entry(login)
 
-tlacidlo_login = Button(login, text="Login")
+tlacidlo_login = Button(login, text="Login", command=prihlasenie)
 
+label_info.grid(row=3, columnspan=2)
 label_meno.grid(row=0, column=0, sticky=E)
 label_heslo.grid(row=1, column=0, sticky=E)
 vstup_meno.grid(row=0, column=1)
 vstup_heslo.grid(row=1, column=1)
 tlacidlo_login.grid(row=2, columnspan=2)
-tlacidlo_login.bind("<Button-1>", prihlasenie)
 
 
 login.mainloop()
