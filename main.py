@@ -8,10 +8,7 @@ def prihlasenie():
     meno = vstup_meno.get() + "\n"
     heslo = vstup_heslo.get() + "\n"
     for x in f:
-        print("Aktualny zaznam je: " + x)
-        print("Zadane meno je: " + meno)
         if x == meno:
-            print("rozpoznal som meno")
             y = f.readline()
             if y == heslo:
                 label_kontrola.config(text="Prihlásenie bolo úspešné.")
@@ -20,21 +17,27 @@ def prihlasenie():
             else:
                 label_kontrola.config(text="Nesprávne heslo, zadajte prosím správne meno a heslo.")
                 prihlasenie_gui()
+                break
     if not uspech:
         f.close()
-        print("Prihlasenie nebolo uspesne, navrat do hlavneho menu")
-        label_kontrola.config(text="Nemvydalo")
+        label_kontrola.config(text="Prihlasenie nebolo uspesne, navrat do hlavneho menu")
         menu()
 
     else:
         f.close()
-        label_kontrola.config(text="Access granted!")
+        label_kontrola.config(text="Uspesne prihlaseny.")
         menu()
 
 def prihlasenie_gui():
     tlacidlo_login.grid_forget()
     tlacidlo_spat.grid_forget()
     label_info.grid_forget()
+
+    vstup_meno.delete(0, END)
+    vstup_heslo.delete(0, END)
+
+    vstup_meno.config(text="")
+    vstup_heslo.config(text="")
 
     label_info.config(text="Pre prihlásenie prosím zadajte Vaše meno a heslo.")
     label_meno.config(text="Meno: ")
@@ -53,23 +56,39 @@ def prihlasenie_gui():
 
 
 def registracia():
-    print("Vytvorenie noveho prihlasovacieho konta")
-    meno = vstup_meno.get()
-    heslo = vstup_heslo.get()
-    print("meno: " + meno + "\n" + "heslo: " + heslo)
-    f = open("login.txt", "a")
-    f.writelines(meno + "\n")
-    f.writelines(heslo + "\n")
-    f.writelines("\n")
-    f.close()
-    print("Zaznam bol uspesne pridany")
-    menu()
+    meno = vstup_meno.get() + "\n"
+    heslo = vstup_heslo.get() + "\n"
+
+    #preskenovanie textaku pre duplicitu
+    f = open("login.txt", "r")
+    uz_regnute = False
+    for x in f:
+        y = f.readline()
+        y = f.readline()
+        if x == meno:
+            uz_regnute = True
+            f.close()
+            break
+    if not uz_regnute:
+        # pridanie noveho loginu na koniec textaku
+        f = open("login.txt", "a")
+        f.writelines(meno + "\n")
+        f.writelines(heslo + "\n")
+        f.writelines("\n")
+        f.close()
+        menu()
+    else:
+        label_kontrola.config(text="Pouzivatelske meno sa uz pouziva, prosim zvolte ine.")
+        prihlasenie_gui()
 
 
 def registracia_gui():
     tlacidlo_login.grid_forget()
     tlacidlo_spat.grid_forget()
     label_info.grid_forget()
+
+    vstup_meno.delete(0, END)
+    vstup_heslo.delete(0, END)
 
     label_info.config(text="Vytvorenie noveho uctu:")
     label_meno.config(text="Zadajte uzivatelske meno: ")
