@@ -51,7 +51,7 @@ def prihlasenie_gui():
     label_heslo.grid(row=1, column=0, sticky=E)
     vstup_meno.grid(row=0, column=1)
     vstup_heslo.grid(row=1, column=1)
-    tlacidlo_login.grid(row=2, column=1)
+    tlacidlo_login.grid(row=2, column=1, pady=10)
     tlacidlo_spat.grid(row=2, column=0)
 
 
@@ -102,7 +102,7 @@ def registracia_gui():
     label_heslo.grid(row=2, column=0, sticky=E)
     vstup_meno.grid(row=1, column=1)
     vstup_heslo.grid(row=2, column=1)
-    tlacidlo_login.grid(row=3, column=1)
+    tlacidlo_login.grid(row=3, column=1, pady=10)
     tlacidlo_spat.grid(row=3, column=0)
 
 
@@ -121,7 +121,7 @@ def menu():
 
     label_info.grid(row=0, columnspan=2, column=0)
     tlacidlo_login.grid(row=1, column=0)
-    tlacidlo_spat.grid(row=1, column=1)
+    tlacidlo_spat.grid(row=1, column=1, pady=20)
 
 
 login = Tk()
@@ -129,7 +129,7 @@ login = Tk()
 label_info = Label(login)
 label_meno = Label(login)
 label_heslo = Label(login)
-label_kontrola = Label(login, text="Ja som kontrola, dont mind me")
+label_kontrola = Label(login, text="Ja som kontrola, dont mind me", bd=1, relief=SUNKEN)
 
 vstup_meno = Entry(login)
 vstup_heslo = Entry(login)
