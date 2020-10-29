@@ -1,9 +1,11 @@
 import sys
 from tkinter import *
+from tkinter import messagebox
 
 
 def prihlasenie():
     uspech = False
+    druhypokus = False
     f = open("login.txt", "r")
     meno = vstup_meno.get() + "\n"
     heslo = vstup_heslo.get() + "\n"
@@ -11,22 +13,26 @@ def prihlasenie():
         if x == meno:
             y = f.readline()
             if y == heslo:
-                label_kontrola.config(text="Prihlásenie bolo úspešné.")
+                kontrola.showinfo("Login system", "Prihlásenie bolo úspešné.")
                 uspech = True
                 break
             else:
-                label_kontrola.config(text="Nesprávne heslo, zadajte prosím správne meno a heslo.")
-                prihlasenie_gui()
+                odpoved = kontrola.askyesno("Login system", "Nesprávne heslo, chcete zopakovat prihlasenie?")
+                if odpoved == 1:
+                    druhypokus = True
+                    break
+                else:
+                    menu()
                 break
-    if not uspech:
-        f.close()
-        label_kontrola.config(text="Prihlasenie nebolo uspesne, navrat do hlavneho menu")
+    f.close()
+    if uspech:
+        menu()
+    elif druhypokus:
+        prihlasenie_gui()
+    else:
+        kontrola.showerror("Login system", "Prihlasenie nebolo uspesne, navrat do hlavneho menu")
         menu()
 
-    else:
-        f.close()
-        label_kontrola.config(text="Uspesne prihlaseny.")
-        menu()
 
 def prihlasenie_gui():
     tlacidlo_login.grid_forget()
@@ -59,7 +65,7 @@ def registracia():
     meno = vstup_meno.get() + "\n"
     heslo = vstup_heslo.get() + "\n"
 
-    #preskenovanie textaku pre duplicitu
+    #sken textaku pre duplicitu
     f = open("login.txt", "r")
     uz_regnute = False
     for x in f:
@@ -68,18 +74,19 @@ def registracia():
         if x == meno:
             uz_regnute = True
             f.close()
+            kontrola.showinfo("Login system", "Vytvorena nova registracia.")
             break
     if not uz_regnute:
         # pridanie noveho loginu na koniec textaku
         f = open("login.txt", "a")
-        f.writelines(meno + "\n")
-        f.writelines(heslo + "\n")
+        f.writelines(meno)
+        f.writelines(heslo)
         f.writelines("\n")
         f.close()
         menu()
     else:
-        label_kontrola.config(text="Pouzivatelske meno sa uz pouziva, prosim zvolte ine.")
-        prihlasenie_gui()
+        kontrola.showerror("Login system", "Pouzivatelske meno sa uz pouziva, prosim zvolte ine.")
+        registracia_gui()
 
 
 def registracia_gui():
@@ -129,15 +136,13 @@ login = Tk()
 label_info = Label(login)
 label_meno = Label(login)
 label_heslo = Label(login)
-label_kontrola = Label(login, text="Ja som kontrola, dont mind me", bd=1, relief=SUNKEN)
+kontrola = messagebox
 
 vstup_meno = Entry(login)
 vstup_heslo = Entry(login)
 
 tlacidlo_login = Button(login)
 tlacidlo_spat = Button(login)
-
-label_kontrola.grid(row=10, columnspan=3)
 
 menu()
 login.mainloop()
